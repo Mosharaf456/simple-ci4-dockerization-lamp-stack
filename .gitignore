@@ -96,8 +96,6 @@ _modules/*
 # phpenv local config
 .php-version
 
-database
-
 # Jetbrains editors (PHPStorm, etc)
 .idea/
 *.iml
@@ -126,3 +124,8 @@ nb-configuration.xml
 
 /results/
 /phpunit*.xml
+
+
+database
+shell-script.sh
+
