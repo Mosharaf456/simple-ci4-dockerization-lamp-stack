@@ -1,9 +1,9 @@
 version: "3.8"
 services:
   web_ci4:
-    build: src
+    build: src/app
     ports:
-      - "443:80"
+      - "8080:80"
     volumes:
       - ./src:/var/www/html:rw
 
@@ -18,8 +18,8 @@ services:
       - MYSQL_PASSWORD=123
     volumes:
       - ./database:/var/lib/mysql:ro
-    
-  
+      # - ./docker/logs/mysql:/var/log/mysql
+      
   phpmyadmin:
     image: phpmyadmin
     links:
