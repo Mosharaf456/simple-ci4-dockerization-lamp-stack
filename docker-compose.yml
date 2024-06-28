@@ -17,9 +17,9 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=123
     volumes:
-      - ./database:/var/lib/mysql:ro
+      - ./database:/var/lib/mysql:rw
       # - ./docker/logs/mysql:/var/log/mysql
-      
+     
   phpmyadmin:
     image: phpmyadmin
     links:
@@ -28,3 +28,9 @@ services:
       - PMA_ARBITRARY=1
     ports:
       - 8081:80
+
+volumes:
+  databse:
+  src:
+  db-logs:
+  apache-cus-conf-backup:
