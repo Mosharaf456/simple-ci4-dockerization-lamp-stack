@@ -1,3 +1,13 @@
 database
 
 src/app/writable*
+
+#-------------------------
+# Composer
+#-------------------------
+src/app/vendor
+
+/push_images.sh
+
+
+

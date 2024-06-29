@@ -12,7 +12,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 
 WORKDIR /var/www/html
 
-RUN composer create-project codeigniter4/appstarter app --prefer-dist --stability=stable --no-progress --no-interaction
+# RUN composer create-project codeigniter4/appstarter app --prefer-dist --stability=stable --no-progress --no-interaction
+COPY . .
 
 RUN chown -R www-data:www-data /var/www/html \
     && composer self-update

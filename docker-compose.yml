@@ -1,6 +1,8 @@
 version: "3.8"
 services:
   web_ci4:
+    container_name: web_ci4_cus
+    image: web-ci4-cus-image:v1.0.1
     build: src/app
     ports:
       - "8080:80"
@@ -8,6 +10,8 @@ services:
       - ./src:/var/www/html:rw
 
   db_ci4:
+    container_name: mysql_db_ci4_cus
+    image: mysql-db-ci4-cus-image:v1.0.1
     build: dockerfiles/mysql
     ports:
       - "3308:3306"
@@ -21,6 +25,7 @@ services:
       # - ./docker/logs/mysql:/var/log/mysql
      
   phpmyadmin:
+    container_name: my_phpmyadmin_container
     image: phpmyadmin
     links:
       - db_ci4
