@@ -8,7 +8,6 @@ services:
       - "8080:80"
     volumes:
       - ./src:/var/www/html:rw
-    restart: unless-stopped
 
   mysql_db_instance:
     container_name: mysql_db_ci4_cus
@@ -41,3 +40,11 @@ volumes:
   src:
   db-logs:
   apache-cus-conf-backup:
+
+# Explanation of restart Policies:  restart:unless-stopped
+# no: Do not automatically restart the container (default).
+# always: Always restart the container if it stops, regardless of the exit status.
+# on-failure: Restart the container only if it exits with a non-zero exit status.
+# unless-stopped: Always restart the container unless it is explicitly stopped or Docker itself is restarted.
+
+
