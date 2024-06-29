@@ -11,7 +11,7 @@ services:
 
   db_ci4:
     container_name: mysql_db_ci4_cus
-    image: mysql-db-ci4-cus-image:v1.0.1
+    image: mysql-db-cus-image:latest
     build: dockerfiles/mysql
     ports:
       - "3308:3306"
