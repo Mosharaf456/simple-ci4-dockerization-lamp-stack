@@ -9,7 +9,7 @@ echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-
 
 # Define image names and tags
 MYSQL_IMAGE_NAME="mysql-db-cus-image"
-MYSQL_TAG="v1.0.1"
+MYSQL_TAG="latest"
 MYSQL_REPO="mosharafhossain/mysql-db-cus-image:latest"
 
 PHP_IMAGE_NAME="web-ci4-cus-image"
