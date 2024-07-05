@@ -17,7 +17,7 @@ COPY . .
 
 RUN chown -R www-data:www-data /var/www/html/
 
-# RUN chmod -R 755 /var/www/html/
+RUN chmod -R 775 /var/www/html/
 
 COPY codeigniter.conf /etc/apache2/sites-available/
 RUN a2ensite codeigniter.conf \
