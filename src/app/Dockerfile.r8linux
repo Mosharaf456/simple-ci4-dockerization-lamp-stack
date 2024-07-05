@@ -10,14 +10,13 @@ RUN apt-get update \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-WORKDIR /var/www/html/
+WORKDIR /var/www/html
 
 # RUN composer create-project codeigniter4/appstarter app --prefer-dist --stability=stable --no-progress --no-interaction
 COPY . .
 
-RUN chown -R www-data:www-data /var/www/html/
-
-# RUN chmod -R 755 /var/www/html/
+RUN chown -R www-data:www-data /var/www/html \
+    && composer self-update
 
 COPY codeigniter.conf /etc/apache2/sites-available/
 RUN a2ensite codeigniter.conf \
@@ -27,22 +26,7 @@ RUN cd /etc/apache2/sites-available \
     && a2dissite 000-default.conf \
     && service apache2 reload || true
 
-RUN ls -la /var/www/html
-
-RUN echo "Creating directory /var/www/html/src/app/logs-cus"
-
-RUN ls -la /var/www/html/app || echo "/var/www/html/app does not exist"
-
-RUN mkdir -p /var/www/html/app/logs-cus \
-    && echo "Directory created" \
-    && ls -la /var/www/html/app \
-    && chown -R www-data:www-data /var/www/html/app/logs-cus \
-    && ls -la /var/www/html/app/logs-cus
-
 EXPOSE 80
+# CMD ["apache2-foreground"]
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["apache2-foreground"]
