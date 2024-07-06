@@ -3,7 +3,9 @@ services:
   web_ci4_instance:
     container_name: web_ci4_cus
     image: web-ci4-cus-image:v1.0.1
-    build: src/app
+    build:
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile.agcg
     ports:
       - "8080:80"
     volumes:
