@@ -1,0 +1,54 @@
+
+FROM php:8.1.0-apache
+
+RUN apt-get update \
+    && apt-get install -y nano zip unzip git libicu-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+WORKDIR /var/www/html/
+
+# RUN composer create-project codeigniter4/appstarter app --prefer-dist --stability=stable --no-progress --no-interaction
+COPY ./src/app .
+
+RUN chown -R www-data:www-data /var/www/html/
+
+RUN chmod -R 755 /var/www/html/
+
+RUN touch /var/www/html/app/can-i-write.txt \
+    || echo "failed to touch file" 
+
+
+RUN echo "I can write" >> /var/www/html/app/can-i-write.txt
+
+COPY ./src/app/codeigniter.conf /etc/apache2/sites-available/
+RUN a2ensite codeigniter.conf \
+    && service apache2 reload || true
+
+RUN cd /etc/apache2/sites-available \
+    && a2dissite 000-default.conf \
+    && service apache2 reload || true
+
+RUN ls -la /var/www/html
+
+RUN echo "Creating directory /var/www/html/src/app/logs-cus"
+
+RUN ls -la /var/www/html/app || echo "/var/www/html/app does not exist"
+
+RUN mkdir -p /var/www/html/app/logs-cus \
+    && echo "Directory created" \
+    && ls -la /var/www/html/app \
+    && chown -R www-data:www-data /var/www/html/app/logs-cus \
+    && ls -la /var/www/html/app/logs-cus
+
+EXPOSE 80
+
+COPY ./src/app/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
