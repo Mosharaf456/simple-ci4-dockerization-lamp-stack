@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 services:
   web_ci4_instance:
     container_name: web_ci4_cus
@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src:/var/www/html:rwx
+      - ./src:/var/www/html:rw
     restart: unless-stopped
 
   mysql_db_instance:
