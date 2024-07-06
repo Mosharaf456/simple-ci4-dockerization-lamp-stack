@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src:/var/www/html:rwx
+      - ./src:/var/www/html:rw
     restart: unless-stopped
 
   mysql_db_instance:
@@ -39,7 +39,7 @@ services:
       - 8081:80
 
 volumes:
-  databse:
-  src:
+  # databse:
+  # src:
   db-logs:
   apache-cus-conf-backup:

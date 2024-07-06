@@ -2,11 +2,12 @@
 set -e
 
 # Create necessary directories if they don't exist
+usermod -u 1000 www-data && groupmod -g 1000 www-data
 mkdir -p /var/www/html/app/logs-cus
 chown -R www-data:www-data /var/www/html/app/logs-cus
 chmod -R 755 /var/www/html/app/logs-cus
 
-# echo "TEST sucessful" >> /var/www/html/app/logs-cus/log.php
+echo "TEST sucessful" >> /var/www/html/app/logs-cus/log.php
 
 # Start Apache in techo "This line will not be printed."
 apache2-foreground

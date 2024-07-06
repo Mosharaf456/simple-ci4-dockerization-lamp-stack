@@ -10,16 +10,14 @@ RUN apt-get update \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-
 WORKDIR /var/www/html/
 
 # RUN composer create-project codeigniter4/appstarter app --prefer-dist --stability=stable --no-progress --no-interaction
 COPY ./src/app .
 
-# Set ownership and permissions
-RUN chown -R www-data:www-data /var/www/html/ \
-    && chmod -R 755 /var/www/html/
+RUN chown -R www-data:www-data /var/www/html/
+
+RUN chmod -R 755 /var/www/html/
 
 RUN touch /var/www/html/app/can-i-write.txt \
     || echo "failed to touch file" 
@@ -39,10 +37,9 @@ RUN ls -la /var/www/html
 
 RUN echo "Creating directory /var/www/html/src/app/logs-cus"
 
-RUN ls -la /var/www/html/app \ 
-    || echo "/var/www/html/app does not exist"
+RUN ls -la /var/www/html/app || echo "/var/www/html/app does not exist"
 
-RUN mkdir -p /var/www/html/app/logs-custom \
+RUN mkdir -p /var/www/html/app/logs-cus \
     && echo "Directory created" \
     && ls -la /var/www/html/app \
     && chown -R www-data:www-data /var/www/html/app/logs-cus \
@@ -50,9 +47,8 @@ RUN mkdir -p /var/www/html/app/logs-custom \
 
 EXPOSE 80
 
+COPY ./src/app/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# ENTRYPOINT [ "apache2-foreground" ]
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# COPY ./src/app/entrypoint.sh /usr/local/bin/entrypoint.sh
-# RUN chmod +x /usr/local/bin/entrypoint.sh
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
