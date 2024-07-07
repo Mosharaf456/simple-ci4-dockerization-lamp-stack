@@ -16,9 +16,7 @@ chmod -R 755 /var/www/html/app/logs-cus
 
 beanstalkd -l 0.0.0.0 -p 11300
 
-service cron status
-
-service cron start
+cron -f
 
 apache2-foreground
 

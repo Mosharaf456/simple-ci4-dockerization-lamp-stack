@@ -1,4 +1,14 @@
-# Example cron job
-* * * * * root sleep 10 && ech "HELLO WOLRD" >> /var/log/cron.log 2>&1
+* * * * * root echo "Hello World1" >> /var/log/cron.log 2>&1
 
-# Make sure to end with a newline
+* * * * * root /bin/bash -c 'echo "Hello World2" >> /var/log/cron.log 2>&1'
+
+
+
+# ┬ ┬ ┬ ┬ ┬
+# │ │ │ │ │
+# │ │ │ │ │
+# │ │ │ │ └─ Day of week (0 - 7) (Sunday is both 0 and 7)
+# │ │ │ └───── Month (1 - 12)
+# │ │ └────────── Day of month (1 - 31)
+# │ └─────────────── Hour (0 - 23)
+# └──────────────────── Minute (0 - 59)

@@ -25,11 +25,7 @@ COPY ./src/app .
 RUN chown -R www-data:www-data /var/www/html/ \
     && chmod -R 755 /var/www/html/
 
-RUN touch /var/www/html/app/can-i-write.txt \
-    || echo "failed to touch file" 
 
-
-RUN echo "I can write" >> /var/www/html/app/can-i-write.txt
 
 COPY ./src/app/codeigniter.conf /etc/apache2/sites-available/
 RUN a2ensite codeigniter.conf \
@@ -41,7 +37,6 @@ RUN cd /etc/apache2/sites-available \
 
 RUN ls -la /var/www/html
 
-RUN echo "Creating directory /var/www/html/src/app/logs-cus"
 
 RUN ls -la /var/www/html/app \ 
     || echo "/var/www/html/app does not exist"
@@ -62,9 +57,6 @@ COPY ./src/app/crontab /etc/cron.d/my-cron-job
 RUN chmod 0644 /etc/cron.d/my-cron-job \
     && crontab /etc/cron.d/my-cron-job
 
-# Create the log file to be able to run tail
-RUN touch /var/log/cron.log
-    
 
 COPY ./src/app/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

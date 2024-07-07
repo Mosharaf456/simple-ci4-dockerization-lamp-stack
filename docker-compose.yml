@@ -5,9 +5,10 @@ services:
     image: web-ci4-cus-image:v1.0.1
     build:
       context: .
-      # dockerfile: ./dockerfiles/ci4/Dockerfile.agcgubunto
+      # dockerfile: ./dockerfiles/ci4/Dockerfile.agcgapachew1
       # dockerfile: ./dockerfiles/ci4/Dockerfile.beanstalkd
-      dockerfile: ./dockerfiles/ci4/Dockerfile.cronservcie
+      # dockerfile: ./dockerfiles/ci4/Dockerfile.cronservcie
+      dockerfile: ./dockerfiles/ci4/Dockerfile.beanstalkdcron
     ports:
       - "8080:80"
       - "11300:11300"

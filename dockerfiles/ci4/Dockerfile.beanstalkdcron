@@ -1,0 +1,58 @@
+# Use a base image
+FROM php:7.4.3-apache
+
+# Set environment variables
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install cron and other dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        cron \
+    && rm -rf /var/lib/apt/lists/*
+
+    # Install dependencies beanstalkd
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        wget \
+        gcc \
+        make \
+        apt-utils \
+        libyaml-dev \
+    && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Beanstalkd 1.12 from source
+RUN wget https://github.com/beanstalkd/beanstalkd/archive/v1.12.tar.gz && \
+    tar -xvzf v1.12.tar.gz && \
+    rm v1.12.tar.gz && \
+    cd beanstalkd-1.12 && \
+    make && \
+    cp beanstalkd /usr/bin/ && \
+    cd .. && \
+    rm -rf beanstalkd-1.12 && \
+    apt-get purge -y --auto-remove wget gcc make libyaml-dev apt-utils
+
+VOLUME /var/lib/beanstalkd/data
+
+
+# Enable Apache modules if needed
+RUN a2enmod rewrite
+
+
+
+# Copy your cron job file into the container
+COPY ./dockerfiles/cronjob /etc/cron.d/cronjob
+
+# Set permissions for the cron job
+RUN chmod 0644 /etc/cron.d/cronjob
+
+
+COPY ./dockerfiles/beanstalkcronjobentry.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/beanstalkcronjobentry.sh
+
+# Expose any necessary ports
+EXPOSE 80 443 11300
+
+ENTRYPOINT ["/usr/local/bin/beanstalkcronjobentry.sh"]
+
+
