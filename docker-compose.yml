@@ -5,41 +5,43 @@ services:
     image: web-ci4-cus-image:v1.0.1
     build:
       context: .
-      dockerfile: ./dockerfiles/ci4/Dockerfile.agcgubunto
+      # dockerfile: ./dockerfiles/ci4/Dockerfile.agcgubunto
+      dockerfile: ./dockerfiles/ci4/Dockerfile.beanstalkd
     ports:
       - "8080:80"
+      - "11300:11300"
     volumes:
       - ./src:/var/www/html:rw
     restart: unless-stopped
 
-  mysql_db_instance:
-    container_name: mysql_db_ci4_cus
-    image: mysql-db-cus-image:latest
-    build: dockerfiles/mysql
-    ports:
-      - "3308:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=12345
-      - MYSQL_DATABASE=docker_database
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=123
-    volumes:
-      - ./database:/var/lib/mysql:rw
-      # - ./docker/logs/mysql:/var/log/mysql
-    restart: on-failure
+  # mysql_db_instance:
+  #   container_name: mysql_db_ci4_cus
+  #   image: mysql-db-cus-image:latest
+  #   build: dockerfiles/mysql
+  #   ports:
+  #     - "3308:3306"
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=12345
+  #     - MYSQL_DATABASE=docker_database
+  #     - MYSQL_USER=admin
+  #     - MYSQL_PASSWORD=123
+  #   # volumes:
+  #     # - ./database:/var/lib/mysql:rw
+  #     # - ./docker/logs/mysql:/var/log/mysql
+  #   restart: on-failure
      
-  phpmyadmin:
-    container_name: my_phpmyadmin_container
-    image: phpmyadmin
-    links:
-      - mysql_db_instance
-    environment:
-      - PMA_ARBITRARY=1
-    ports:
-      - 8081:80
+  # phpmyadmin:
+  #   container_name: my_phpmyadmin_container
+  #   image: phpmyadmin
+  #   links:
+  #     - mysql_db_instance
+  #   environment:
+  #     - PMA_ARBITRARY=1
+  #   ports:
+  #     - 8081:80
 
-volumes:
+# volumes:
   # databse:
   # src:
-  db-logs:
-  apache-cus-conf-backup:
+  # db-logs:
+  # apache-cus-conf-backup:

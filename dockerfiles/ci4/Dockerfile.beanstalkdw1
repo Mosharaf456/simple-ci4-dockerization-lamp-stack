@@ -1,0 +1,33 @@
+FROM php:8.1.0-apache
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV PATH /usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+RUN apt-get update
+RUN apt-get install -y beanstalkd
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+VOLUME /var/lib/beanstalkd/data
+
+RUN a2enmod rewrite
+
+# Expose the Beanstalkd port
+EXPOSE 11300
+
+# Start Beanstalkd when the container starts
+# ENTRYPOINT /usr/bin/beanstalkd -l 0.0.0.0 -p 11300
+
+# ENTRYPOINT ["service /usr/bin/beanstalkd start","apache2-foreground"]
+
+
+# CMD service beanstalkd start && apache2-foreground
+
+# Copy custom entry point script
+COPY ./dockerfiles/beanstalkentry.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/beanstalkentry.sh
+
+ENTRYPOINT ["/usr/local/bin/beanstalkentry.sh"]
+
+
+
+

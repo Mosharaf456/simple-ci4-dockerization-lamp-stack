@@ -1,12 +1,16 @@
 
 FROM php:8.1.0-apache
 
+
+# Install required packages, PHP extensions, Beanstalkd dependencies, and cron
 RUN apt-get update \
-    && apt-get install -y nano zip unzip git libicu-dev \
+    && apt-get install -y nano zip unzip git libicu-dev curl build-essential \
+       libevent-dev cron \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
@@ -43,11 +47,28 @@ RUN ls -la /var/www/html/app \
     || echo "/var/www/html/app does not exist"
 
 
-EXPOSE 80
+# Install Beanstalkd
+RUN apt-get update && apt-get install -y libevent-dev \
+    && curl -sSL https://github.com/kr/beanstalkd/archive/v1.12.tar.gz | tar xz \
+    && cd beanstalkd-1.12 \
+    && make \
+    && make install \
+    && cd .. \
+    && rm -r beanstalkd-1.12
 
 
-# ENTRYPOINT [ "apache2-foreground" ]
+# Add cron jobs
+COPY ./src/app/crontab /etc/cron.d/my-cron-job
+RUN chmod 0644 /etc/cron.d/my-cron-job \
+    && crontab /etc/cron.d/my-cron-job
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+    
 
 COPY ./src/app/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+EXPOSE 80 11300
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -1,0 +1,4 @@
+# Example cron job
+* * * * * root sleep 10 && ech "HELLO WOLRD" >> /var/log/cron.log 2>&1
+
+# Make sure to end with a newline
