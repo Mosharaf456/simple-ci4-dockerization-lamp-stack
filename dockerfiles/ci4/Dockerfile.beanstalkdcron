@@ -4,15 +4,11 @@ FROM php:7.4.3-apache
 # Set environment variables
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install cron and other dependencies
+
+# Install dependencies cron and beanstalkd 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         cron \
-    && rm -rf /var/lib/apt/lists/*
-
-    # Install dependencies beanstalkd
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
         wget \
         gcc \
         make \
@@ -37,8 +33,6 @@ VOLUME /var/lib/beanstalkd/data
 
 # Enable Apache modules if needed
 RUN a2enmod rewrite
-
-
 
 # Copy your cron job file into the container
 COPY ./dockerfiles/cronjob /etc/cron.d/cronjob

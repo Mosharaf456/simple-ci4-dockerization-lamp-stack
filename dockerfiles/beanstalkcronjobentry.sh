@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-# Start Beanstalkd service
-beanstalkd -l 0.0.0.0 -p 11300 
+php -v
 
-cron -f 
+beanstalkd -l 0.0.0.0 -p 11300
 
-# Start Apache in foreground
+cron -f
+
 apache2-foreground
 
