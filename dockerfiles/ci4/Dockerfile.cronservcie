@@ -1,0 +1,26 @@
+# Use a base image
+FROM php:7.4.3-apache
+
+# Set environment variables
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install cron and other dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        cron \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable Apache modules if needed
+RUN a2enmod rewrite
+
+# Expose any necessary ports
+EXPOSE 80
+
+# Copy your cron job file into the container
+COPY ./dockerfiles/cronjob /etc/cron.d/cronjob
+
+# Set permissions for the cron job
+RUN chmod 0644 /etc/cron.d/cronjob
+
+# Start cron service when the container starts
+CMD ["cron", "-f", "apache2","-f"]

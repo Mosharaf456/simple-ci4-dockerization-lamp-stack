@@ -6,7 +6,8 @@ services:
     build:
       context: .
       # dockerfile: ./dockerfiles/ci4/Dockerfile.agcgubunto
-      dockerfile: ./dockerfiles/ci4/Dockerfile.beanstalkd
+      # dockerfile: ./dockerfiles/ci4/Dockerfile.beanstalkd
+      dockerfile: ./dockerfiles/ci4/Dockerfile.cronservcie
     ports:
       - "8080:80"
       - "11300:11300"
