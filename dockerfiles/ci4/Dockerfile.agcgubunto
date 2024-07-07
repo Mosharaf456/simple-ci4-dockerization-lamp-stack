@@ -42,17 +42,12 @@ RUN echo "Creating directory /var/www/html/src/app/logs-cus"
 RUN ls -la /var/www/html/app \ 
     || echo "/var/www/html/app does not exist"
 
-RUN mkdir -p /var/www/html/app/logs-custom \
-    && echo "Directory created" \
-    && ls -la /var/www/html/app \
-    && chown -R www-data:www-data /var/www/html/app/logs-cus \
-    && ls -la /var/www/html/app/logs-cus
 
 EXPOSE 80
 
 
 # ENTRYPOINT [ "apache2-foreground" ]
 
-# COPY ./src/app/entrypoint.sh /usr/local/bin/entrypoint.sh
-# RUN chmod +x /usr/local/bin/entrypoint.sh
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+COPY ./src/app/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
